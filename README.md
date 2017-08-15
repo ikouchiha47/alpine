@@ -2,6 +2,8 @@
 
 Simple music player, plays music with gsstreamer. (And I dont like ituning)
 
+![Screenshot](https://github.com/argentum47/alpine/blob/master/screenshot.jpg "Alpine on mac")
+
 ### Usage
 
 - run from cli, either provide a Music directory, or a playlist file which has paths separated by new lines
