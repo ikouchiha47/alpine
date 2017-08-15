@@ -20,7 +20,7 @@
         id: filename
         text: 'Music Player'
         center_x: root.center_x 
-        center_y: root.center_y + 64
+        center_y: root.center_y + 300 + 64
         valign: 'top'
 
     FloatLayout:
@@ -30,23 +30,23 @@
             id: next
             source: "icons/next.png"
             center_x: root.width / 2 - 32 + (100 + 10) 
-            center_y: self.parent.center_y
+            center_y: self.parent.center_y + 600
             on_release: root.callback(self)
         ImageButton:
             id: play
             source: "icons/play.png"
             center_x: root.width / 2 - 32
-            center_y: self.parent.center_y
+            center_y: self.parent.center_y + 600
             on_release: root.callback(self)
         ImageButton:
             id: prev
             source: "icons/prev.png"
             center_x: root.width / 2 - 32 - (100 + 10) 
-            center_y: self.parent.center_y
+            center_y: self.parent.center_y + 600
             on_release: root.callback(self)
 
     BoxLayout:
-        y: 10
+        center_y: self.parent.center_y + 250 
         x: root.width / 2 + (128 + 84)
         Slider:
             min: 0.0
@@ -61,7 +61,7 @@
             value_track_color: hex("#69e5cf")
 
     BoxLayout:
-        y: 10
+        center_y: self.parent.center_y + 250 
         x: root.width / 2 + (128 + 64)
         Image:
             source: "icons/audio.png"
@@ -71,6 +71,7 @@
   
     BoxLayout:
         width: root.width
+        center_y: self.parent.center_y + 250
         ProgressBar:
             id: pb
             size_hint: 1, None

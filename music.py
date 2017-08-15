@@ -17,7 +17,7 @@ class MusicPlayer(Widget):
 
     def __init__(self, **kwargs):
         super(MusicPlayer, self).__init__(**kwargs)
-        Window.size = (600, 100)
+        Window.size = (600, 400)
         self._keyboard = Window.request_keyboard(self._keyboard_closed, self)
         self._keyboard.bind(on_key_down=self._on_keyboard_down)
 
