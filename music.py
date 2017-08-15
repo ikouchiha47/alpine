@@ -1,3 +1,4 @@
+from functools import partial
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
@@ -41,7 +42,13 @@ class MusicPlayer(Widget):
     def add_songs(self, songs):
         self.songs = songs
         self.index = 0
+        that = self
 
+        for song in songs:
+            play_song = partial(self.play)
+            btn = Button(text=song)
+            self.ids.scroll.add_widget(btn)
+    
         if len(songs) > 0:
             self.nowPlaying = self.load_song(self.index)
 
@@ -128,8 +135,6 @@ class MusicPlayer(Widget):
             if widget.__self__ == instance:
                 return id
 
-class AudioButton(Button):
-    pass
 
 class MusicApp(App):
     def build(self):
