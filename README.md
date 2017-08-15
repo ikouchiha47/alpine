@@ -12,12 +12,13 @@ Simple music player, plays music with gsstreamer. (And I dont like ituning)
 - `python main.py --playlist ~/playlist_file`
 - having done that once, you can just run the main.py without any cli args
 
-### Install stuff
+### Install stuff for devel
 
 - Install `gstreamer`, `gst-plugins-base`, `gst-plugins-good`, `gst-plugins-bad`, `gst-plugins-ugly`, `gst-ffmpeg` or `gst-libav`
 - Have pip and shit
 - run pip install -r requirements.txt
 
+I added an installer script to make an executable I guess, run `./installer` and check the `dist/` folder
 
 #### TODO:
 
