@@ -1,0 +1,60 @@
+#:kivy 1.0
+#:import kivy kivy
+#:import hex kivy.utils.get_color_from_hex
+
+<ImageButton@ButtonBehavior+Image>:
+    spacing: "5dp"
+    size: 64, 64
+
+<MusicPlayer>:
+    orientation: 'vertical'
+    canvas:
+        Color:
+            rgba: hex('#7c7d94')
+        Rectangle:
+            pos: 0, 0
+            size: self.size
+
+    FloatLayout:
+        orientation: "horizontal"
+        size_hint: None, None
+        ImageButton:
+            id: next
+            source: "icons/next.png"
+            center_x: root.width / 2 + (100 + 10) 
+            center_y: self.parent.center_y
+            on_release: root.callback(self)
+        ImageButton:
+            id: play
+            source: "icons/play.png"
+            center_x: root.width / 2
+            center_y: self.parent.center_y
+            on_release: root.callback(self)
+        ImageButton:
+            id: prev
+            source: "icons/prev.png"
+            center_x: root.width / 2 - (100 + 10) 
+            center_y: self.parent.center_y
+            on_release: root.callback(self)
+
+    BoxLayout:
+        y: 10
+        x: root.width / 2 + (128 + 94)
+        Slider:
+            min: 0.0
+            max: 1.0
+            value: 0.5
+            on_value: root.set_volume(self.value)
+            orientation: "horizontal"
+            size_hint_x: None
+            width: "108dp"
+            cursor_size: "16sp", "16sp"
+            value_track: True
+            value_track_color: hex("#69e5cf")
+           
+<AudioButton>:
+    size_hint: None, 0.333
+    width: self.height
+    text_size: self.size
+    font_size: '12sp'
+    valign: 'middle'
