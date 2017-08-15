@@ -14,6 +14,9 @@ class MusicPlayer(Widget):
     event = None
     isPlaying = False
     songs = []
+    buttons = []
+    playing_bg = (1.0, 0.5, 0.3, 1)
+    normal_bg = (0.0, 0.0, 0.0, 0.2)
 
     def __init__(self, **kwargs):
         super(MusicPlayer, self).__init__(**kwargs)
@@ -37,22 +40,26 @@ class MusicPlayer(Widget):
             App.get_running_app().stop()
 
         return True
+    
+    def play_song(self, btninstance):
+        self.buttons[self.index].background_color = self.normal_bg
+        btninstance.background_color = self.playing_bg
+        self.play(int(btninstance.id), True)
 
     def add_songs(self, songs):
         self.songs = songs
         self.index = 0
 
         for idx, song in enumerate(songs):
-            def play_song(bt):
-                self.play(int(bt.id), True)
-    
             song_text = song.rstrip().rpartition('/')[-1]
-            btn = Button(text=song_text, background_color=(0,0,0,0.2), size=(1200, 40), size_hint=(None, None))
+            btn = Button(text=song_text, background_color=self.normal_bg, size=(1200, 40), size_hint=(None, None))
+            btn.background_normal = ''
             btn.text_size = (1100, None)
             btn.shorten = True
             btn.id = str(idx)
             btn.shorten_from = 'right'
-            btn.bind(on_press=play_song)
+            btn.bind(on_press=self.play_song)
+            self.buttons.append(btn)
             self.ids.scroll.add_widget(btn)
 
         if len(songs) > 0:
@@ -89,6 +96,8 @@ class MusicPlayer(Widget):
         if not self.nowPlaying:
             return
 
+        self.buttons[self.index].background_color = self.normal_bg
+
         self.pause()
         self.nowPlaying.unload()
         self.nowPlaying = self.load_song(index)
@@ -97,6 +106,8 @@ class MusicPlayer(Widget):
             self.event.cancel()
 
         self.event = Clock.schedule_interval(self.update_progress_bar, 1/25.)
+        self.buttons[self.index].background_color = self.playing_bg
+        self.ids.scrollview.scroll_to(self.buttons[self.index], animate=True)
 
         if shouldPlay:
             self.isPlaying = True
