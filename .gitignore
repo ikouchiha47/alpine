@@ -2,3 +2,4 @@ stuff/
 .venv/
 *.pyc
 *.txt
+.DS_Store

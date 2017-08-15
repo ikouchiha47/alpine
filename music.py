@@ -3,12 +3,14 @@ from kivy.uix.widget import Widget
 from kivy.config import Config
 from kivy.core.audio import SoundLoader
 from kivy.uix.button import Button
+from kivy.clock import Clock
 
 Config.set('graphics','width', '600')
 Config.set('graphics','height', '100')
 
 class MusicPlayer(Widget):
     nowPlaying = None
+    event = None
     songs = []
 
     def add_songs(self, songs):
@@ -16,7 +18,7 @@ class MusicPlayer(Widget):
         self.index = 0
 
         if len(songs) > 0:
-            self.nowPlaying = self.load_song(self.index) 
+            self.nowPlaying = self.load_song(self.index)
 
     def load_song(self, index):
         if index >= len(self.songs):
@@ -26,27 +28,57 @@ class MusicPlayer(Widget):
         else:
             self.index = index
 
-        return SoundLoader.load(self.songs[self.index].rstrip())
+
+        song = self.songs[self.index].rstrip()
+        self.ids.filename.text = song.rpartition('/')[-1]
+
+        return SoundLoader.load(song)
+
+    def update_progress_bar(self, dt):
+        length = self.nowPlaying.length
+        played = self.nowPlaying.get_pos()
+
+        if self.nowPlaying.state == "stop":
+            self.event.cancel()
+
+        self.ids.pb.value = (self.width) * (played / length)
 
     def play_next(self):
         if not self.nowPlaying:
             return
 
+        wasPlaying = True
+        if self.nowPlaying.state == "stop":
+            wasPlaying = False
+ 
         self.pause()
+        if self.event:
+            self.event.cancel()
         self.nowPlaying.unload()
         self.nowPlaying = self.load_song(self.index + 1)
-        self.play()
- 
+
+        if wasPlaying:
+            self.play()
+
     def play_prev(self):
         if not self.nowPlaying:
             return
 
+        wasPlaying = True
+        if self.nowPlaying.state == "stop":
+            wasPlaying = False
+
         self.pause()
+        if self.event:
+            self.event.cancel()
         self.nowPlaying.unload()
         self.nowPlaying = self.load_song(self.index - 1)
-        self.play()
+
+        if wasPlaying:
+            self.play()
 
     def play(self):
+        self.event = Clock.schedule_interval(self.update_progress_bar, 1/25.)
         self.nowPlaying.play()
 
     def pause(self):
@@ -68,8 +100,10 @@ class MusicPlayer(Widget):
                 self.play_next()
             elif command == "play" and self.nowPlaying:
                 if self.nowPlaying.state == "stop":
+                    self.ids.play.source = "icons/pause.png"
                     self.play()
                 else:
+                    self.ids.play.source = "icons/play.png"
                     self.pause()
         except Exception as e:
             print e
@@ -82,6 +116,7 @@ class MusicPlayer(Widget):
 
 class MusicApp(App):
     def build(self):
+
         with open('songs.txt', 'r') as f:
             lines = f.readlines()
 
