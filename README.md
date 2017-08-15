@@ -7,10 +7,10 @@ Simple music player, plays music with gsstreamer. (And I dont like ituning)
 ### Usage
 
 - run from cli, either provide a Music directory, or a playlist file which has paths separated by new lines
-- if lines separated by `\r\n` may god be with you
 - `python2.7 main.py --dir ~/List ~/Of ~/Dirs` , or
 - `python main.py --playlist ~/playlist_file`
 - having done that once, you can just run the main.py without any cli args
+- I added an installer script to make an executable I guess, run `./installer` and check the `dist/` folder
 
 ### Install stuff for devel
 
@@ -18,7 +18,7 @@ Simple music player, plays music with gsstreamer. (And I dont like ituning)
 - Have pip and shit
 - run pip install -r requirements.txt
 
-I added an installer script to make an executable I guess, run `./installer` and check the `dist/` folder
+
 
 #### TODO:
 
