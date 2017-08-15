@@ -16,6 +16,12 @@ Simple music player, plays music with gsstreamer. (And I dont like ituning)
 - Have pip and shit
 - run pip install -r requirements.txt
 
+### Keyboard shortcuts
+
+- `j` for next in playlist
+- `k` for previous in playlist
+- `space` to toggle play and pause
+- `esc` to exit app
 
 #### TODO:
 
