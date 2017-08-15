@@ -1,0 +1,37 @@
+#!/bin/bash
+
+echo "Hoping python2.7, pip and virtualenv and upx is installed"
+
+if ! [[ "$(python -V 2>&1)" =~ 2\.7 ]]; then
+  echo "python 2.7 required"
+  exit
+fi
+
+if [[ -z "$(virtualenv --version)" ]]; then
+  echo "virtualenv not present"
+  exit
+fi
+
+if ! [[ "$(upx -V | head -n1)" =~ upx.* ]]; then
+  echo "please install upx"
+  exit
+fi
+
+if [[ -z "$(pip --version | cut -d ' ' -f2)" ]]; then
+  echo "pip not installed"
+fi
+
+echo "starting virtualenv"
+virtualenv .venv
+
+echo "installing pyinstaller"
+pip install PyInstaller
+
+echo "generating .spec file"
+pyinstaller -y --clean --windowed --icon ~/Downloads/music-player.png --name alpine \
+  --exclude-module _tkinter \
+  --exclude-module Tkinter \
+  --exclude-module enchant \
+  --exclude-module twisted \
+  ../music/main.py
+
