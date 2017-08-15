@@ -3,3 +3,4 @@ stuff/
 *.pyc
 *.txt
 .DS_Store
+*.spec

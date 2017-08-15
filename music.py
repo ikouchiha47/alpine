@@ -41,6 +41,9 @@ class MusicPlayer(Widget):
 
         if self.nowPlaying.state == "stop":
             self.event.cancel()
+            ## gana khatam go to next song
+            if self.isPlaying:
+                self.play(self.index + 1, self.isPlaying)
             return
 
         self.ids.pb.value = (self.width) * (played / length)
@@ -94,6 +97,8 @@ class MusicPlayer(Widget):
             if widget.__self__ == instance:
                 return id
 
+class AudioButton(Button):
+    pass
 
 class MusicApp(App):
     def build(self):
@@ -103,6 +108,7 @@ class MusicApp(App):
 
         music = MusicPlayer()
         music.add_songs(lines)
+
         return music
 
 
