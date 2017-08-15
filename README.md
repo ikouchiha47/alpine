@@ -17,3 +17,6 @@ Simple music player, plays music with gsstreamer. (And I dont like ituning)
 - run pip install -r requirements.txt
 
 
+#### TODO:
+
+- [ ] Add a music list to click and play
