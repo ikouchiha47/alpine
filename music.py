@@ -11,6 +11,7 @@ Config.set('graphics','height', '100')
 class MusicPlayer(Widget):
     nowPlaying = None
     event = None
+    isPlaying = False
     songs = []
 
     def add_songs(self, songs):
@@ -40,48 +41,28 @@ class MusicPlayer(Widget):
 
         if self.nowPlaying.state == "stop":
             self.event.cancel()
+            return
 
         self.ids.pb.value = (self.width) * (played / length)
 
-    def play_next(self):
+    def play(self, index, shouldPlay=True):
         if not self.nowPlaying:
             return
 
-        wasPlaying = True
-        if self.nowPlaying.state == "stop":
-            wasPlaying = False
- 
         self.pause()
+        self.nowPlaying.unload()
+        self.nowPlaying = self.load_song(index)
+
         if self.event:
             self.event.cancel()
-        self.nowPlaying.unload()
-        self.nowPlaying = self.load_song(self.index + 1)
 
-        if wasPlaying:
-            self.play()
-
-    def play_prev(self):
-        if not self.nowPlaying:
-            return
-
-        wasPlaying = True
-        if self.nowPlaying.state == "stop":
-            wasPlaying = False
-
-        self.pause()
-        if self.event:
-            self.event.cancel()
-        self.nowPlaying.unload()
-        self.nowPlaying = self.load_song(self.index - 1)
-
-        if wasPlaying:
-            self.play()
-
-    def play(self):
         self.event = Clock.schedule_interval(self.update_progress_bar, 1/25.)
-        self.nowPlaying.play()
+        if shouldPlay:
+            self.isPlaying = True
+            self.nowPlaying.play()
 
     def pause(self):
+        self.isPlaying = False
         self.nowPlaying.stop()
 
     def set_volume(self, volume):
@@ -95,13 +76,13 @@ class MusicPlayer(Widget):
 
         try:
             if command == "prev":
-                self.play_prev()
+                self.play(self.index - 1, self.isPlaying)
             elif command == "next":
-                self.play_next()
+                self.play(self.index + 1, self.isPlaying)
             elif command == "play" and self.nowPlaying:
                 if self.nowPlaying.state == "stop":
                     self.ids.play.source = "icons/pause.png"
-                    self.play()
+                    self.play(self.index, True)
                 else:
                     self.ids.play.source = "icons/play.png"
                     self.pause()
@@ -117,7 +98,7 @@ class MusicPlayer(Widget):
 class MusicApp(App):
     def build(self):
 
-        with open('songs.txt', 'r') as f:
+        with open('playlist.txt', 'r') as f:
             lines = f.readlines()
 
         music = MusicPlayer()
