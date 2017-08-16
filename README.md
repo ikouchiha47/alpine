@@ -2,7 +2,7 @@
 
 Simple music player, plays music with gsstreamer. (And I dont like ituning)
 
-![Screenshot](https://github.com/argentum47/alpine/blob/master/screenshot.jpg "Alpine on mac")
+![Screenshot](https://github.com/argentum47/alpine/blob/add_playlist/screenshot.jpg "Alpine on mac")
 
 ### Usage
 
