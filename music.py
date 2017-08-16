@@ -1,3 +1,4 @@
+from os.path import isfile
 from kivy.app import App
 from kivy.uix.widget import Widget
 from kivy.core.window import Window
@@ -51,9 +52,10 @@ class MusicPlayer(Widget):
         self.index = 0
 
         for idx, song in enumerate(songs):
-            song_text = song.rstrip().rpartition('/')[-1]
+            song_text = song.rpartition('/')[-1]
             btn = Button(text=song_text, background_color=self.normal_bg, size=(1200, 40), size_hint=(None, None))
             btn.background_normal = ''
+            btn.padding_y = 40 # not working
             btn.text_size = (1100, None)
             btn.shorten = True
             btn.id = str(idx)
@@ -74,7 +76,7 @@ class MusicPlayer(Widget):
             self.index = index
 
 
-        song = self.songs[self.index].rstrip()
+        song = self.songs[self.index]
         self.ids.filename.text = song.rpartition('/')[-1]
 
         return SoundLoader.load(song)
@@ -85,7 +87,7 @@ class MusicPlayer(Widget):
 
         if self.nowPlaying.state == "stop":
             self.event.cancel()
-            ## gana khatam go to next song
+            ## go to next song
             if self.isPlaying:
                 self.play(self.index + 1, self.isPlaying)
             return
@@ -155,11 +157,17 @@ class MusicPlayer(Widget):
 
 class MusicApp(App):
     def build(self):
+        song_paths = []
         with open('playlist.txt', 'r') as f:
             lines = f.readlines()
 
+        for l in lines:
+            if isfile(l.rstrip()):
+                song_paths.append(l.rstrip()) 
+
         music = MusicPlayer(size=(600, 100))
-        music.add_songs(lines)
+
+        music.add_songs(song_paths)
 
         return music
 
