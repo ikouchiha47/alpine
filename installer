@@ -23,9 +23,10 @@ fi
 
 echo "starting virtualenv"
 virtualenv .venv
+source .venv/bin/activate
 
 echo "installing pyinstaller"
-pip install PyInstaller
+pip install -r requirements.txt
 
 echo "generating .spec file"
 pyinstaller -y --clean --windowed --icon ~/Downloads/music-player.png --name alpine \

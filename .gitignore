@@ -4,3 +4,5 @@ stuff/
 *.txt
 .DS_Store
 *.spec
+build/
+dist/
